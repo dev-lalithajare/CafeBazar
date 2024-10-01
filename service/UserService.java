@@ -36,10 +36,16 @@ import java.util.List;
 import java.util.Scanner;
 
 import CoffeeMaker.models.Customer;
+import CoffeeMaker.models.Order;
 
 public class UserService {
     
     private List<Customer> customers = new ArrayList<>();
+    private OrderService orderService;
+
+    public UserService(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     public List<Customer> getCustomers() {
         return customers;
@@ -58,9 +64,16 @@ public class UserService {
     private Customer addCustomer(String name){
         Customer customer = getCustomerByName(name);
         if (customer != null) {
+            List<Order> previousOrders = orderService.getOrdersForCustomer(customer.getCustomerId());
+            if (!previousOrders.isEmpty()) {
+                System.out.println("Your previous orders");
+                orderService.displayBill(previousOrders, name);
+            }
             return customer;
         }else{
-            return new Customer(name);
+            customer = new Customer(name);
+            customers.add(customer);
+            return customer;
         }
     }
 
@@ -87,7 +100,7 @@ public class UserService {
 
     @SuppressWarnings("unchecked")
     public void retrieveData(){
-        String fileName= "Test.txt";
+        String fileName= "customers.txt";
         try{
             FileInputStream fin = new FileInputStream(fileName);
             ObjectInputStream ois = new ObjectInputStream(fin);

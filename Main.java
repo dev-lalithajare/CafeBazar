@@ -39,9 +39,12 @@ public class Main {
     
     static IOManager manager = new IOManager();
     static OrderService orderService = new OrderService();
-    static UserService userService = new UserService();
+    static UserService userService = new UserService(orderService);
 
     public static void main(String[] args) {
+
+        orderService.retrieveData();
+        userService.retrieveData();
         boolean takeNewOrder = true;
         List<Order> orders = new ArrayList<>();
         Scanner userInput = new Scanner(System.in);
@@ -63,7 +66,8 @@ public class Main {
             }             
             
         }
-        orderService.displayBill(orders, customer.getCustomerId());
+        orderService.displayBill(orders, customer.getName());
+        userService.saveData();
         userInput.close();        
     }
 

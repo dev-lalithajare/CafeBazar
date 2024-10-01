@@ -41,6 +41,10 @@ public class Order implements Serializable{
         this.quantity = quantity;
     }
     
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
     public MenuItem getItem() {
         return item;
     }

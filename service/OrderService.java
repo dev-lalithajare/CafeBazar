@@ -26,10 +26,17 @@
 
 package CoffeeMaker.service;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
+import CoffeeMaker.models.Customer;
 import CoffeeMaker.models.MenuItem;
 import CoffeeMaker.models.Order;
 import CoffeeMaker.models.burger.Classic;
@@ -42,6 +49,8 @@ import CoffeeMaker.models.coffee.Latte;
 
 public class OrderService {
 
+    private List<Order> orders = new ArrayList<>();
+
     public Order takeOrder(Scanner userInput, UUID customerId) {
         System.out.println("Please order something, we have -");
         System.out.println("1. Coffee");
@@ -52,6 +61,16 @@ public class OrderService {
             category = userInput.nextInt();
         }        
         return prepareOrder(category, userInput, customerId);
+    }
+
+    public List<Order> getOrdersForCustomer(UUID customerId){
+        List<Order> customerOrders = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.getCustomerId().equals(customerId)) {
+                customerOrders.add(order);
+            }
+        }
+        return customerOrders;
     }
 
     private Order prepareOrder(int category, Scanner userInput, UUID customerId) {
@@ -149,7 +168,7 @@ public class OrderService {
     }
 
 
-    public void displayBill(List<Order> orders, UUID customerId){
+    public void displayBill(List<Order> orders, String customerName){
         System.out.println("****************************** INVOICE ************************************");
         double total = 0.00;
         for (Order order : orders) {            
@@ -159,7 +178,40 @@ public class OrderService {
         }
         System.out.println("--------------------------------------------------------------------");
         System.out.println("TOTAL BILL:     "+total);
+        System.out.println("CUSTOMER NAME:      "+customerName);
         System.out.println("*******************************************************************");
+
+        saveData();
+        orders.clear();
+    }
+
+    public void saveData(){
+        String fileName = "orders.txt";
+        try {
+            FileOutputStream fos = new FileOutputStream(fileName);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(orders);
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void retrieveData(){
+        String fileName= "orders.txt";
+        try{
+            FileInputStream fin = new FileInputStream(fileName);
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            List<Order> orders = (List<Order>) ois.readObject();
+            ois.close();
+            this.orders = orders;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
     }
 
 }
