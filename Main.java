@@ -26,18 +26,14 @@
 
 package CafeBazar;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import CafeBazar.models.Customer;
-import CafeBazar.models.Order;
 import CafeBazar.service.OrderService;
 import CafeBazar.service.UserService;
 
 public class Main {
     
-    static IOManager manager = new IOManager();
     static OrderService orderService = new OrderService();
     static UserService userService = new UserService(orderService);
 
