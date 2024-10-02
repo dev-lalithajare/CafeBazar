@@ -1,9 +1,9 @@
 /* 
  *  MIT License
  *  
- *  Copyright (c) 2024 lalit
+ *  Copyright (c) 2024 Lalit Hajare
  *  
- *  Created on Tue Oct 01 2024 by lalit
+ *  Created on Wed Oct 02 2024 by lalit
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@ package CafeBazar.models;
 
 import java.io.Serializable;
 
-public abstract class MenuItem implements Serializable{
+public interface MenuItem extends Serializable{
     
-    public abstract String getTitle();
+    public String getTitle();
 
-    public abstract double getPrice();
+    public double getPrice();
 
 }
