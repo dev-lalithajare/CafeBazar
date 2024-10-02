@@ -31,12 +31,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import CoffeeMaker.models.Customer;
 import CoffeeMaker.models.Order;
+import CoffeeMaker.utils.Constants;
 
 public class UserService {
     
@@ -52,22 +54,21 @@ public class UserService {
     }
 
     public Customer askUserData(Scanner userInput){
-        System.out.println("Welcome to CAFE BAZAR!");
+        System.out.println("\nWelcome to CAFE BAZAR!");
         System.out.println("Enter your name");
         String name = userInput.nextLine();
         Customer customer = addCustomer(name);
-        System.out.println("Taking orders from "+customer.getName());
-        System.out.println("\n");
+        System.out.println("\nTaking orders from "+customer.getName()+"\n");        
         return customer;
     }
 
     private Customer addCustomer(String name){
         Customer customer = getCustomerByName(name);
         if (customer != null) {
-            List<Order> previousOrders = orderService.getOrdersForCustomer(customer.getCustomerId());
+            List<Order> previousOrders = orderService.getPreviousOrdersForCustomer(customer.getCustomerId());
             if (!previousOrders.isEmpty()) {
-                System.out.println("Your previous orders");
-                orderService.displayBill(previousOrders, name);
+                System.out.println("\nYour previous orders");
+                orderService.displayPurchaseHistory(customer.getCustomerId());
             }
             return customer;
         }else{
@@ -87,9 +88,10 @@ public class UserService {
     }
 
     public void saveData(){
-        String fileName = "customers.txt";
+        File file = new File(Constants.CUTOMER_RECORDS_FILE);
         try {
-            FileOutputStream fos = new FileOutputStream(fileName);
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file, false);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(customers);
             oos.close();
@@ -99,10 +101,9 @@ public class UserService {
     }
 
     @SuppressWarnings("unchecked")
-    public void retrieveData(){
-        String fileName= "customers.txt";
+    public void retrieveData(){        
         try{
-            FileInputStream fin = new FileInputStream(fileName);
+            FileInputStream fin = new FileInputStream(Constants.CUTOMER_RECORDS_FILE);
             ObjectInputStream ois = new ObjectInputStream(fin);
             List<Customer> customers = (List<Customer>) ois.readObject();
             ois.close();

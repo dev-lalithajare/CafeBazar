@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -46,12 +47,17 @@ import CoffeeMaker.models.coffee.Americano;
 import CoffeeMaker.models.coffee.Cappucino;
 import CoffeeMaker.models.coffee.Espresso;
 import CoffeeMaker.models.coffee.Latte;
+import CoffeeMaker.models.tea.Black;
+import CoffeeMaker.models.tea.Green;
+import CoffeeMaker.models.tea.Herbal;
+import CoffeeMaker.utils.Constants;
 
 public class OrderService {
 
     private List<Order> orders = new ArrayList<>();
+    private List<Order> previousOrders = new ArrayList<>();
 
-    public Order takeOrder(Scanner userInput, UUID customerId) {
+    public boolean takeOrder(Scanner userInput, UUID customerId) {
         System.out.println("Please order something, we have -");
         System.out.println("1. Coffee");
         System.out.println("2. Tea");
@@ -60,12 +66,14 @@ public class OrderService {
         if (userInput.hasNextInt()) {
             category = userInput.nextInt();
         }        
-        return prepareOrder(category, userInput, customerId);
+        Order order = prepareOrder(category, userInput, customerId);
+        orders.add(order);
+        return order != null;
     }
 
-    public List<Order> getOrdersForCustomer(UUID customerId){
+    public List<Order> getPreviousOrdersForCustomer(UUID customerId){
         List<Order> customerOrders = new ArrayList<>();
-        for (Order order : orders) {
+        for (Order order : previousOrders) {
             if (order.getCustomerId().equals(customerId)) {
                 customerOrders.add(order);
             }
@@ -144,74 +152,84 @@ public class OrderService {
 
     Order prepareBurgerOrder(int burgerOrder, int quantity, UUID customerId){
         switch (burgerOrder) {
-            case 1: return new Order(new Hamburger(), quantity);    
+            case 1: return new Order(new Hamburger(), quantity, customerId);    
         
-            case 2: return new Order(new Classic(), quantity);   
+            case 2: return new Order(new Classic(), quantity, customerId);   
             
-            case 3: return new Order(new Indian(), quantity);
+            case 3: return new Order(new Indian(), quantity, customerId);
 
-            default: return new Order(new Hamburger(), quantity);
+            default: return new Order(new Hamburger(), quantity, customerId);
         }
     }
 
 
-    Order prepareTeaOrder(int burgerOrder, int quantity, UUID customerId){
-        switch (burgerOrder) {
-            case 1: return new Order(new Hamburger(), quantity);    
+    Order prepareTeaOrder(int teaOrder, int quantity, UUID customerId){
+        switch (teaOrder) {
+            case 1: return new Order(new Green(), quantity, customerId);    
         
-            case 2: return new Order(new Classic(), quantity);   
+            case 2: return new Order(new Black(), quantity, customerId);   
             
-            case 3: return new Order(new Indian(), quantity);
+            case 3: return new Order(new Herbal(), quantity, customerId);
 
-            default: return new Order(new Hamburger(), quantity);
+            default: return new Order(new Black(), quantity, customerId);
         }
     }
 
+    public void displayPurchaseHistory(UUID customerId){
+        System.out.println("****************************** PURCHASE HISTORY *********************");
+        for (Order order : previousOrders) {      
+            if (order.getCustomerId().equals(customerId)) {
+                MenuItem item = order.getItem();
+                System.out.println("ITEM: "+item.getTitle()+", PRICE: "+item.getPrice()+", QUANTITY: "+order.getQuantity());
+            }                 
+        }
+        System.out.println("--------------------------------------------------------------------");
+        System.out.println("CUSTOMER ID:      "+customerId);
+        System.out.println("*******************************************************************");        
+    }
 
-    public void displayBill(List<Order> orders, String customerName){
+    public void displayBill(UUID customerId){
         System.out.println("****************************** INVOICE ************************************");
-        double total = 0.00;
-        for (Order order : orders) {            
-            MenuItem item = order.getItem();
-            total += item.getPrice() * order.getQuantity();
-            System.out.println("ITEM: "+item.getTitle()+", PRICE: "+item.getPrice()+", QUANTITY: "+order.getQuantity());
+        double total = 0.00;        
+        for (Order order : orders) {      
+            if (order.getCustomerId().equals(customerId)) {
+                MenuItem item = order.getItem();
+                total += item.getPrice() * order.getQuantity();
+                System.out.println("ITEM: "+item.getTitle()+", PRICE: "+item.getPrice()+", QUANTITY: "+order.getQuantity());
+            }                 
         }
         System.out.println("--------------------------------------------------------------------");
         System.out.println("TOTAL BILL:     "+total);
-        System.out.println("CUSTOMER NAME:      "+customerName);
-        System.out.println("*******************************************************************");
-
-        saveData();
-        orders.clear();
+        System.out.println("CUSTOMER ID:      "+customerId);
+        System.out.println("*******************************************************************");              
     }
 
-    public void saveData(){
-        String fileName = "orders.txt";
+    public void saveDataAndClear(){
+        File file = new File(Constants.ORDER_RECORDS_FILE);        
         try {
-            FileOutputStream fos = new FileOutputStream(fileName);
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file, false);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
+            orders.addAll(previousOrders);
             oos.writeObject(orders);
             oos.close();
-        } catch (IOException e) {
+            orders.clear();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void retrieveData(){
-        String fileName= "orders.txt";
+    public void retrieveData(){        
         try{
-            FileInputStream fin = new FileInputStream(fileName);
+            FileInputStream fin = new FileInputStream(Constants.ORDER_RECORDS_FILE);
             ObjectInputStream ois = new ObjectInputStream(fin);
             List<Order> orders = (List<Order>) ois.readObject();
             ois.close();
-            this.orders = orders;
-        } catch (IOException e) {
+            this.previousOrders = orders;
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        
+        }         
     }
 
 }

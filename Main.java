@@ -45,16 +45,14 @@ public class Main {
 
         orderService.retrieveData();
         userService.retrieveData();
-        boolean takeNewOrder = true;
-        List<Order> orders = new ArrayList<>();
+        boolean takeNewOrder = true;        
         Scanner userInput = new Scanner(System.in);
 
         Customer customer = userService.askUserData(userInput);        
 
         while (takeNewOrder) {
-            Order order = orderService.takeOrder(userInput, customer.getCustomerId());  
-            if (order != null) {
-                orders.add(order); 
+            boolean isOrderTaken = orderService.takeOrder(userInput, customer.getCustomerId());  
+            if (isOrderTaken) {                
                 System.out.println("Another order? Y/N");   
                 if (userInput.next().equalsIgnoreCase("Y")) {
                     takeNewOrder = true;
@@ -66,7 +64,8 @@ public class Main {
             }             
             
         }
-        orderService.displayBill(orders, customer.getName());
+        orderService.displayBill(customer.getCustomerId());
+        orderService.saveDataAndClear();
         userService.saveData();
         userInput.close();        
     }
