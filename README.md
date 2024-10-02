@@ -34,8 +34,8 @@ git clone https://github.com/dev-lalithajare/CoffeeMaker
 
 Run the project: This project code is written in Java. You will need to install jdk/jre on your machine, then run following commands -
 
-javac Main.java
-java Main
+1. javac Main.java 
+2. java Main
 
 
 **Contributing**
