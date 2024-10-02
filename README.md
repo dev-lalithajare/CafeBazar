@@ -20,6 +20,8 @@ The project aims to design a software system for a hotel that efficiently manage
 
     1. It accepts the user information and saves it
     2. Processes the customized order requested by user
+    3. Displays the Invoice after execution of order
+    4. Displays the Purchase History of customer before taking the order
 
 **Installation**
 
@@ -32,8 +34,8 @@ git clone https://github.com/dev-lalithajare/CoffeeMaker
 
 Run the project: This project code is written in Java. You will need to install jdk/jre on your machine, then run following commands -
 
-javac main.java
-java main
+javac Main.java
+java Main
 
 
 **Contributing**
