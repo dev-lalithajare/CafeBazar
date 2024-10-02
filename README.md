@@ -1,6 +1,6 @@
-**CoffeMaker**
+**CafeBazar**
 
-A Simple Demonstration Project
+A demonstration project for a hotel's order and billing system
 
 **Table of Contents**
 
@@ -14,8 +14,7 @@ A Simple Demonstration Project
 
 **Overview**
 
-This project is created as a demonstration to showcase the implementation of SOLID principles. This project is linked with an article that explains how to properly implement SOLID principles. 
-The link of this article is << LINK >>.
+The project aims to design a software system for a hotel that efficiently manages customer orders, displays bills, and tracks purchase history. The system will simplify the process of placing orders, handling transactions, and keeping records of all past orders, offering a seamless experience for both customers and hotel staff.
 
 **Features**
 
