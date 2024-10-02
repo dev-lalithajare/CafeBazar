@@ -24,7 +24,7 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.models.coffee;
+package CafeBazar.models.coffee;
 
 public class Espresso extends Coffee{
 

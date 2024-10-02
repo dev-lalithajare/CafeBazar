@@ -24,16 +24,16 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker;
+package CafeBazar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import CoffeeMaker.models.Customer;
-import CoffeeMaker.models.Order;
-import CoffeeMaker.service.OrderService;
-import CoffeeMaker.service.UserService;
+import CafeBazar.models.Customer;
+import CafeBazar.models.Order;
+import CafeBazar.service.OrderService;
+import CafeBazar.service.UserService;
 
 public class Main {
     

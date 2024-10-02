@@ -1,4 +1,4 @@
-package CoffeeMaker.utils;
+package CafeBazar.utils;
 
 public class Constants {
 

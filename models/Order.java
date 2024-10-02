@@ -24,7 +24,7 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.models;
+package CafeBazar.models;
 
 import java.io.Serializable;
 import java.util.UUID;

@@ -24,7 +24,7 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker;
+package CafeBazar;
  
 enum MainOrder {
 

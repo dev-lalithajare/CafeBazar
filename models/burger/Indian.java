@@ -24,7 +24,7 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.models.burger;
+package CafeBazar.models.burger;
 
 public class Indian extends Burger{
 

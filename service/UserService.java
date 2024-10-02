@@ -24,7 +24,7 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.service;
+package CafeBazar.service;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -36,9 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import CoffeeMaker.models.Customer;
-import CoffeeMaker.models.Order;
-import CoffeeMaker.utils.Constants;
+import CafeBazar.models.Customer;
+import CafeBazar.models.Order;
+import CafeBazar.utils.Constants;
 
 public class UserService {
     

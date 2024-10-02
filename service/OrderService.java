@@ -24,7 +24,7 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.service;
+package CafeBazar.service;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -37,20 +37,20 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
-import CoffeeMaker.models.Customer;
-import CoffeeMaker.models.MenuItem;
-import CoffeeMaker.models.Order;
-import CoffeeMaker.models.burger.Classic;
-import CoffeeMaker.models.burger.Hamburger;
-import CoffeeMaker.models.burger.Indian;
-import CoffeeMaker.models.coffee.Americano;
-import CoffeeMaker.models.coffee.Cappucino;
-import CoffeeMaker.models.coffee.Espresso;
-import CoffeeMaker.models.coffee.Latte;
-import CoffeeMaker.models.tea.Black;
-import CoffeeMaker.models.tea.Green;
-import CoffeeMaker.models.tea.Herbal;
-import CoffeeMaker.utils.Constants;
+import CafeBazar.models.Customer;
+import CafeBazar.models.MenuItem;
+import CafeBazar.models.Order;
+import CafeBazar.models.burger.Classic;
+import CafeBazar.models.burger.Hamburger;
+import CafeBazar.models.burger.Indian;
+import CafeBazar.models.coffee.Americano;
+import CafeBazar.models.coffee.Cappucino;
+import CafeBazar.models.coffee.Espresso;
+import CafeBazar.models.coffee.Latte;
+import CafeBazar.models.tea.Black;
+import CafeBazar.models.tea.Green;
+import CafeBazar.models.tea.Herbal;
+import CafeBazar.utils.Constants;
 
 public class OrderService {
 

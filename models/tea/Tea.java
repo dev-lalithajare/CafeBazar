@@ -24,9 +24,9 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.models.tea;
+package CafeBazar.models.tea;
 
-import CoffeeMaker.models.MenuItem;
+import CafeBazar.models.MenuItem;
 
 public abstract class Tea extends MenuItem{
     @Override

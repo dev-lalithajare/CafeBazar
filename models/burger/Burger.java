@@ -24,9 +24,9 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.models.burger;
+package CafeBazar.models.burger;
 
-import CoffeeMaker.models.MenuItem;
+import CafeBazar.models.MenuItem;
 
 public abstract class Burger extends MenuItem{
     @Override

@@ -24,9 +24,9 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.models.coffee;
+package CafeBazar.models.coffee;
 
-import CoffeeMaker.models.MenuItem;
+import CafeBazar.models.MenuItem;
 
 public abstract class Coffee extends MenuItem{
 

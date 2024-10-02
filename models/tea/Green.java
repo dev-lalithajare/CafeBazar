@@ -24,7 +24,7 @@
  *  THE SOFTWARE.
  */
 
-package CoffeeMaker.models.tea;
+package CafeBazar.models.tea;
 
 public class Green extends Tea{
     @Override
