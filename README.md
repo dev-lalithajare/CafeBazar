@@ -19,7 +19,7 @@ The project aims to design a software system for a hotel that efficiently manage
 **Features**
 
     1. It accepts the user information and saves it
-    2. Creates the customized coffee requested by user
+    2. Processes the customized order requested by user
 
 **Installation**
 
