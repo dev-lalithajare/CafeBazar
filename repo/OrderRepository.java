@@ -16,6 +16,11 @@ public class OrderRepository implements IOrderRepo {
     private List<Order> previousOrders = new ArrayList<>();
 
     @Override
+    public List<Order> getPreviousOrders() {
+        return previousOrders;
+    }
+
+    @Override
     public void saveDataAndClear(List<Order> orders) {
         File file = new File(Constants.ORDER_RECORDS_FILE);        
         try {

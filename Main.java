@@ -33,6 +33,7 @@ import CafeBazar.repo.IOrderRepo;
 import CafeBazar.repo.IUserRepo;
 import CafeBazar.repo.OrderRepository;
 import CafeBazar.repo.UserRepository;
+import CafeBazar.service.BillService;
 import CafeBazar.service.OrderService;
 import CafeBazar.service.UserService;
 
@@ -40,8 +41,10 @@ public class Main {
     
     static IOrderRepo orderRepository = new OrderRepository();
     static IUserRepo userRepository = new UserRepository();
+
     static OrderService orderService = new OrderService(orderRepository);
     static UserService userService = new UserService(userRepository);
+    static BillService billService = new BillService(orderRepository);
 
     public static void main(String[] args) {
 
@@ -55,7 +58,7 @@ public class Main {
 
         Customer customer = userService.getCustomerByName(name);
         if (customer != null) {
-            orderService.displayPurchaseHistory(customer.getCustomerId());
+            billService.displayPurchaseHistory(customer.getCustomerId());
         }else{
             customer = userService.addCustomer(name);
         }
@@ -74,7 +77,7 @@ public class Main {
             }             
             
         }
-        orderService.displayBill(customer.getCustomerId());
+        billService.displayBill(customer.getCustomerId(), orderService.getOrders());
         orderService.finalizeData();
         userService.finalizeData();
         userInput.close();        

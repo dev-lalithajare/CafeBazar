@@ -57,7 +57,6 @@ public class OrderService {
     }
 
     private List<Order> orders = new ArrayList<>();
-    private List<Order> previousOrders = new ArrayList<>();
 
     public boolean takeOrder(Scanner userInput, UUID customerId) {
         System.out.println("Please order something, we have -");
@@ -75,7 +74,7 @@ public class OrderService {
 
     public List<Order> getPreviousOrdersForCustomer(UUID customerId){
         List<Order> customerOrders = new ArrayList<>();
-        for (Order order : previousOrders) {
+        for (Order order : orderRepository.getPreviousOrders()) {
             if (order.getCustomerId().equals(customerId)) {
                 customerOrders.add(order);
             }
@@ -214,44 +213,17 @@ public class OrderService {
         }
     }
 
-    public void displayPurchaseHistory(UUID customerId){
-        System.out.println("****************************** PURCHASE HISTORY *********************");
-        for (Order order : previousOrders) {      
-            if (order.getCustomerId().equals(customerId)) {
-                MenuItem item = order.getItem();
-                System.out.println("ITEM: "+item.getTitle()+", PRICE: "+item.getPrice()+", QUANTITY: "+order.getQuantity());
-            }                 
-        }
-        System.out.println("--------------------------------------------------------------------");
-        System.out.println("CUSTOMER ID:      "+customerId);
-        System.out.println("*******************************************************************");        
-    }
 
-    public void displayBill(UUID customerId){
-        System.out.println("****************************** INVOICE ************************************");
-        double total = 0.00;        
-        for (Order order : orders) {      
-            if (order.getCustomerId().equals(customerId)) {
-                MenuItem item = order.getItem();
-                total += item.getPrice() * order.getQuantity();
-                System.out.println("ITEM: "+item.getTitle()+", PRICE: "+item.getPrice()+", QUANTITY: "+order.getQuantity());
-            }                 
-        }
-        System.out.println("--------------------------------------------------------------------");
-        System.out.println("TOTAL BILL:     "+total);
-        System.out.println("CUSTOMER ID:      "+customerId);
-        System.out.println("*******************************************************************");              
+    public List<Order> getOrders() {
+        return orders;
     }
-
+   
     public void finalizeData(){
         orderRepository.saveDataAndClear(orders);
     }
 
     public void loadPreviousOrders(){        
-        List<Order> previousOrders = orderRepository.retrieveData(); 
-        if (previousOrders != null) {
-            this.previousOrders.addAll(previousOrders);   
-        }
+        orderRepository.retrieveData();         
     }
 
 }
