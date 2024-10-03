@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
-import CafeBazar.models.IExtraChargeableBeverageToppings;
-import CafeBazar.models.MenuItem;
 import CafeBazar.models.Order;
 import CafeBazar.models.burger.BurgerToppings;
 import CafeBazar.models.burger.Classic;

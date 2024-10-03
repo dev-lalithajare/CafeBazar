@@ -53,6 +53,7 @@ public class UserRepository implements IUserRepo{
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Customer> retrieveData() {
         try{
