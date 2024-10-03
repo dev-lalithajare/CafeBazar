@@ -26,9 +26,13 @@
 
 package CafeBazar.models.coffee;
 
+import CafeBazar.models.IExtraChargeableBeverageToppings;
 import CafeBazar.models.MenuItem;
 
-public abstract class Coffee implements MenuItem{
+public class Coffee implements MenuItem, IExtraChargeableBeverageToppings{
+
+    protected boolean isExtraCreamUsed = false;
+    protected boolean isSugarFreeSweatnerUsed = false;
 
     @Override
     public String getTitle() {
@@ -37,7 +41,24 @@ public abstract class Coffee implements MenuItem{
 
     @Override
     public double getPrice() {
-        return 8.00;
+        double basePrice = 8.00;
+        if (isExtraCreamUsed) {
+            basePrice += 0.50;
+        }
+        if (isSugarFreeSweatnerUsed) {
+            basePrice += 1.00;
+        }
+        return basePrice;
     }
-   
+
+    @Override
+    public void setExtraCreamUsed(boolean isUsed) {
+        isExtraCreamUsed = isUsed;
+    }
+
+    @Override
+    public void setSugerFreeSweetnerUsed(boolean isUsed) {
+        isSugarFreeSweatnerUsed = isUsed;        
+    }
+
 }

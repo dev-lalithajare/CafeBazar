@@ -28,7 +28,7 @@ package CafeBazar.models.tea;
 
 import CafeBazar.models.MenuItem;
 
-public abstract class Tea implements MenuItem{
+public class Tea implements MenuItem{
     @Override
     public String getTitle() {        
         return "Tea";

@@ -26,9 +26,16 @@
 
 package CafeBazar.models.burger;
 
+import CafeBazar.models.IExtraChargeableBeverageToppings;
+import CafeBazar.models.IExtraChargeableBurgerToppings;
 import CafeBazar.models.MenuItem;
 
-public abstract class Burger implements MenuItem{
+public class Burger implements MenuItem, IExtraChargeableBurgerToppings{
+
+    protected boolean isAvocadoUsed = false;
+    protected boolean isSaraTogaChipsUsed = false;
+    protected boolean isExtraBeaconUsed = false;
+
     @Override
     public String getTitle() {        
         return "Burger";
@@ -36,7 +43,32 @@ public abstract class Burger implements MenuItem{
 
     @Override
     public double getPrice() {
-        return 10.00;
+        double basePrice = 10.00;
+        if (isAvocadoUsed) {
+            basePrice += 1.50;
+        }
+        if (isSaraTogaChipsUsed) {
+            basePrice += 0.50;
+        }
+        if (isExtraBeaconUsed) {
+            basePrice += 2.50;
+        }
+        return basePrice;
+    }
+
+    @Override
+    public void setAvocadoUsed(boolean isUsed) {
+        isAvocadoUsed = isUsed;
+    }
+
+    @Override
+    public void setSaraTogaChipsUsed(boolean isUsed) {
+        isSaraTogaChipsUsed = isUsed;
+    }
+
+    @Override
+    public void setExtraBeaconUsed(boolean isUsed) {
+       isExtraBeaconUsed = isUsed;
     }
 }
 
