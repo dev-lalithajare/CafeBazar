@@ -29,22 +29,36 @@ package CafeBazar;
 import java.util.Scanner;
 
 import CafeBazar.models.Customer;
+import CafeBazar.repo.IOrderRepo;
+import CafeBazar.repo.IUserRepo;
+import CafeBazar.repo.OrderRepository;
+import CafeBazar.repo.UserRepository;
 import CafeBazar.service.OrderService;
 import CafeBazar.service.UserService;
 
 public class Main {
     
-    static OrderService orderService = new OrderService();
-    static UserService userService = new UserService(orderService);
+    static IOrderRepo orderRepository = new OrderRepository();
+    static IUserRepo userRepository = new UserRepository();
+    static OrderService orderService = new OrderService(orderRepository);
+    static UserService userService = new UserService(userRepository);
 
     public static void main(String[] args) {
 
-        orderService.retrieveData();
+        orderService.loadPreviousOrders();
         userService.retrieveData();
         boolean takeNewOrder = true;        
         Scanner userInput = new Scanner(System.in);
+        System.out.println("\nWelcome to CAFE BAZAR!");
+        System.out.println("Enter your name");
+        String name = userInput.nextLine();
 
-        Customer customer = userService.askUserData(userInput);        
+        Customer customer = userService.getCustomerByName(name);
+        if (customer != null) {
+            orderService.displayPurchaseHistory(customer.getCustomerId());
+        }else{
+            customer = userService.addCustomer(name);
+        }
 
         while (takeNewOrder) {
             boolean isOrderTaken = orderService.takeOrder(userInput, customer.getCustomerId());  
@@ -61,8 +75,8 @@ public class Main {
             
         }
         orderService.displayBill(customer.getCustomerId());
-        orderService.saveDataAndClear();
-        userService.saveData();
+        orderService.finalizeData();
+        userService.finalizeData();
         userInput.close();        
     }
 

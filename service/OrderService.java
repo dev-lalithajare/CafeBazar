@@ -26,33 +26,35 @@
 
 package CafeBazar.service;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
-import CafeBazar.models.Customer;
+import CafeBazar.models.IExtraChargeableBeverageToppings;
 import CafeBazar.models.MenuItem;
 import CafeBazar.models.Order;
+import CafeBazar.models.burger.BurgerToppings;
 import CafeBazar.models.burger.Classic;
 import CafeBazar.models.burger.Hamburger;
 import CafeBazar.models.burger.Indian;
 import CafeBazar.models.coffee.Americano;
 import CafeBazar.models.coffee.Cappucino;
+import CafeBazar.models.coffee.CoffeeToppings;
 import CafeBazar.models.coffee.Espresso;
 import CafeBazar.models.coffee.Latte;
 import CafeBazar.models.tea.Black;
 import CafeBazar.models.tea.Green;
 import CafeBazar.models.tea.Herbal;
-import CafeBazar.utils.Constants;
+import CafeBazar.repo.IOrderRepo;
 
 public class OrderService {
+
+    private IOrderRepo orderRepository;
+
+    public OrderService(IOrderRepo orderRepository){
+        this.orderRepository = orderRepository;
+    }
 
     private List<Order> orders = new ArrayList<>();
     private List<Order> previousOrders = new ArrayList<>();
@@ -94,11 +96,12 @@ public class OrderService {
                 if (userInput.hasNextInt()) {
                     orderInput = userInput.nextInt();    
                 }                
+                CoffeeToppings coffeeToppings = getCoffeeToppingsUserInput(userInput);
                 System.out.println("Please enter the quantity");
                 if (userInput.hasNextInt()) {
                     quantityInput = userInput.nextInt();  
                 }                 
-            return prepareCoffeeOrder(orderInput, quantityInput, customerId);            
+            return prepareCoffeeOrder(orderInput, quantityInput, customerId, coffeeToppings);            
 
             case 2:
                 System.out.println("We have different types of Tea, please select one");
@@ -121,12 +124,13 @@ public class OrderService {
                 System.out.println("3. Indian/Wada-Pav");
                 if (userInput.hasNextInt()) {
                     orderInput = userInput.nextInt();    
-                }    
+                } 
+                BurgerToppings burgerToppings = getBurgerToppingsUserInput(userInput);   
                 System.out.println("Please enter the quantity");
                 if (userInput.hasNextInt()) {
                     quantityInput = userInput.nextInt();  
-                } 
-            return prepareBurgerOrder(orderInput, quantityInput, customerId);
+                }                 
+            return prepareBurgerOrder(orderInput, quantityInput, customerId, burgerToppings);
         
             default:
                 System.out.println("Please order something from our Menu");                                      
@@ -134,31 +138,67 @@ public class OrderService {
         }
     }
 
+    CoffeeToppings getCoffeeToppingsUserInput(Scanner userInput){        
+        boolean useExtraCream = false;
+        boolean useSugarFreeSweetner = false;
+        userInput.nextLine();
+        System.out.println("Do you need extra Cream? Y/N");
+        if (userInput.nextLine().equalsIgnoreCase("y")) {
+            useExtraCream = true;
+        }
+        System.out.println("Do you need sugarless sweetner? Y/N");
+        if (userInput.nextLine().equalsIgnoreCase("y")) {
+            useSugarFreeSweetner = true;
+        }
+        return new CoffeeToppings(useExtraCream, useSugarFreeSweetner);
+    }
 
-    Order prepareCoffeeOrder(int coffeeOrder, int quantity, UUID customerId){
+    BurgerToppings getBurgerToppingsUserInput(Scanner userInput){        
+        boolean useExtraBeacon = false;
+        boolean useAvocado = false;
+        boolean useSaraTogaChips = false;
+        userInput.nextLine();
+        System.out.println("Do you need extra Beacon? Y/N");
+        if (userInput.nextLine().equalsIgnoreCase("y")) {
+            useExtraBeacon = true;
+        }
+
+        System.out.println("Do you need Avocado? Y/N");
+        if (userInput.nextLine().equalsIgnoreCase("y")) {
+            useAvocado = true;
+        }
+
+        System.out.println("Do you need Saratoga chips? Y/N");
+        if (userInput.nextLine().equalsIgnoreCase("y")) {
+            useSaraTogaChips = true;
+        }
+
+        return new BurgerToppings(useAvocado, useSaraTogaChips, useExtraBeacon);
+    }
+
+    Order prepareCoffeeOrder(int coffeeOrder, int quantity, UUID customerId, CoffeeToppings coffeeToppings){
         switch (coffeeOrder) {
-            case 1: return new Order(new Americano(), quantity, customerId);    
+            case 1: return new Order(coffeeToppings.updateToppings(new Americano()), quantity, customerId);    
         
-            case 2: return new Order(new Cappucino(), quantity, customerId);   
+            case 2: return new Order(coffeeToppings.updateToppings(new Cappucino()), quantity, customerId);   
             
-            case 3: return new Order(new Latte(), quantity, customerId);
+            case 3: return new Order(coffeeToppings.updateToppings(new Latte()), quantity, customerId);
 
-            case 4: return new Order(new Espresso(), quantity, customerId);
+            case 4: return new Order(coffeeToppings.updateToppings(new Espresso()), quantity, customerId);
 
-            default: return new Order(new Americano(), quantity, customerId);
+            default: return new Order(coffeeToppings.updateToppings(new Americano()), quantity, customerId);
         }
     }
 
-
-    Order prepareBurgerOrder(int burgerOrder, int quantity, UUID customerId){
+    Order prepareBurgerOrder(int burgerOrder, int quantity, UUID customerId, BurgerToppings burgerToppings){
         switch (burgerOrder) {
-            case 1: return new Order(new Hamburger(), quantity, customerId);    
+            case 1: return new Order(burgerToppings.updateToppings(new Hamburger()), quantity, customerId);    
         
-            case 2: return new Order(new Classic(), quantity, customerId);   
+            case 2: return new Order(burgerToppings.updateToppings(new Classic()), quantity, customerId);   
             
-            case 3: return new Order(new Indian(), quantity, customerId);
+            case 3: return new Order(burgerToppings.updateToppings(new Indian()), quantity, customerId);
 
-            default: return new Order(new Hamburger(), quantity, customerId);
+            default: return new Order(burgerToppings.updateToppings(new Hamburger()), quantity, customerId);
         }
     }
 
@@ -203,32 +243,15 @@ public class OrderService {
         System.out.println("*******************************************************************");              
     }
 
-    public void saveDataAndClear(){
-        File file = new File(Constants.ORDER_RECORDS_FILE);        
-        try {
-            file.createNewFile();
-            FileOutputStream fos = new FileOutputStream(file, false);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            orders.addAll(previousOrders);
-            oos.writeObject(orders);
-            oos.close();
-            orders.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void finalizeData(){
+        orderRepository.saveDataAndClear(orders);
     }
 
-    @SuppressWarnings("unchecked")
-    public void retrieveData(){        
-        try{
-            FileInputStream fin = new FileInputStream(Constants.ORDER_RECORDS_FILE);
-            ObjectInputStream ois = new ObjectInputStream(fin);
-            List<Order> orders = (List<Order>) ois.readObject();
-            ois.close();
-            this.previousOrders = orders;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }         
+    public void loadPreviousOrders(){        
+        List<Order> previousOrders = orderRepository.retrieveData(); 
+        if (previousOrders != null) {
+            this.previousOrders.addAll(previousOrders);   
+        }
     }
 
 }

@@ -16,4 +16,10 @@ public class CoffeeToppings {
     public boolean isUseSugarFreeSweatner() {
         return useSugarFreeSweatner;
     }    
+
+    public Coffee updateToppings(Coffee coffee){
+        coffee.isExtraCreamUsed = useExtraCream;
+        coffee.isSugarFreeSweatnerUsed = useSugarFreeSweatner;
+        return coffee;
+    }
 }

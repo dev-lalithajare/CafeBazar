@@ -26,7 +26,6 @@
 
 package CafeBazar.models.burger;
 
-import CafeBazar.models.IExtraChargeableBeverageToppings;
 import CafeBazar.models.IExtraChargeableBurgerToppings;
 import CafeBazar.models.MenuItem;
 

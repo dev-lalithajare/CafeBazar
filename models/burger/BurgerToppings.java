@@ -29,5 +29,12 @@ public class BurgerToppings {
     public void setUseExtraBeacon(boolean useExtraBeacon) {
         this.useExtraBeacon = useExtraBeacon;
     }
+
+    public Burger updateToppings(Burger burger){
+        burger.isAvocadoUsed = useAvocado;
+        burger.isExtraBeaconUsed = useExtraBeacon;
+        burger.isSaraTogaChipsUsed = useSaraTogaChips;
+        return burger;
+    }
       
 }
