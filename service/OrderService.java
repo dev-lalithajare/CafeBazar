@@ -162,7 +162,6 @@ public class OrderService {
         }
     }
 
-
     Order prepareTeaOrder(int teaOrder, int quantity, UUID customerId){
         switch (teaOrder) {
             case 1: return new Order(new Green(), quantity, customerId);    

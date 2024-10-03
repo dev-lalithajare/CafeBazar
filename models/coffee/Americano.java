@@ -37,5 +37,5 @@ public class Americano extends Coffee{
     public double getPrice() {
         return super.getPrice() + 2.50;
     }
-    
+
 }
